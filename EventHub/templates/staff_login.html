@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Tempahan EventHub MDPP</title>
+    <link rel="icon" href="../static/media/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+            text-decoration: none;
+            outline: none;
+            transition: all .2s linear;
+            -webkit-user-select: none;  
+            -moz-user-select: none;    
+            -ms-user-select: none;     
+            user-select: none;
+        }
+
+        body {
+            background-color: rgb(255, 255, 255);
+        }
+
+        .logos {
+            background-color: rgb(252, 252, 177);
+            height: 170px;
+        }
+        .logos img{
+            width: 100px;
+            margin-top: 20px;
+            cursor: default;
+        }
+
+        .logos h1 {
+            font-size: 20px;
+            font-family: 'Poppins', sans-serif;
+            margin-top: 10px;
+            cursor: default;
+            letter-spacing: 1px;
+            color: rgb(64, 64, 240);
+        }
+
+        .container {
+            background-color: rgb(188, 222, 238);
+            position: relative;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); /* Softer shadow for a subtle 3D effect */
+            border-radius: 10px; /* Rounded corners */
+            width: 22rem;
+            height: 14rem;
+            padding: 30px;
+            text-align: center;
+            margin: 6rem;
+        }
+
+        .container h1 {
+            font-size: 15px;
+            font-family: 'Poppins', sans-serif;
+            padding: 15px;
+            color: #333;
+            letter-spacing: 1px;
+        }
+
+        .container label {
+            font-size: 17px;
+            font-family: sans-serif;
+        }
+
+        .container input {
+            font-size: 14px;
+            font-family: sans-serif;
+        }
+
+        .container a {
+            text-decoration: none;
+        }
+
+        .input-icon-container i {
+            color: #333; /* Icon color */
+            margin-right: 10px;
+        }
+
+
+        input[type=text], input[type=password] {
+            width: 270px;
+            padding: 10px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        .container input:hover {
+            border-color: rgb(50, 49, 49);
+        }
+
+        .container .password-input .showpass{
+            font-size: 14px;
+            font-family: sans-serif;
+            color: rgb(50, 49, 49);
+        }
+
+        .container .password-input .password-toggle{
+            font-size: 18px;
+            color: rgb(50, 49, 49);
+        }
+        
+        .container #login {
+            background-color: #333;
+            font-size: 12px;
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 2px;
+            color: white;
+            padding: 12px 25px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            
+        }
+
+        .container #login:hover {
+            opacity: 0.7;
+        }
+
+        h2 {
+            font-size: 13px;
+            font-family: 'Poppins', sans-serif;
+            color: #605f5f;
+            margin-top: 10px;
+        }
+
+    </style>
+</head>
+
+<body>
+    {% load static %}
+    <div class="logos">
+        <center>
+            <img src="{% static "media/logo_MDPP.png" %}" alt="Logo MDPP">
+            <h1>MAJLIS DAERAH PASIR PUTEH</h1>            
+        </center>
+    </div>
+    
+    <center><form action="{% url 'staff_login' %}" method="post">
+        {% csrf_token %}      
+        <div class="container">
+            <h1>Log Untuk Staff Sahaja</h1>
+            
+            <center>
+                <div class="input-icon-container">
+                    <i class="fa fa-user"></i>
+                    <input type="text" placeholder="Kata Nama Pengguna *" name="idStaff" required autocomplete="off">
+                </div>
+            </center>
+            
+            <center>               
+                <div class="input-icon-container">
+                    <i class="fa fa-lock"></i>
+                    <input type="password" placeholder="Kata Laluan Pengguna *" name="password" id="password" required autocomplete="off">
+                </div>            
+            </center>
+            
+            <button type="submit" id="login">LOG MASUK</button><br>
+    
+            <center><h2>{{ message }}</h2></center><br><br>
+        </div>
+    </form></center>
+</body>
+</html>

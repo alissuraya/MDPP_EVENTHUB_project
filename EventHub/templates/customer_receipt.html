@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Tempahan EventHub MDPP</title>
+    <link rel="icon" href="../static/media/favicon3.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+            text-decoration: none;
+            outline: none;
+            transition: all .2s linear;
+            -webkit-user-select: none;  
+            -moz-user-select: none;    
+            box-sizing: border-box;
+            -ms-user-select: none;     
+            user-select: none;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            padding: 10px;
+            margin: 0;
+        }
+
+        .receipt-container {
+            max-width: 800px;
+            margin: 0 auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fff;
+            padding: 30px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .receipt-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .receipt-header img {
+            max-width: 80px;
+            margin-bottom: 10px;
+        }
+        .receipt-header h2 {
+            font-size: 28px;
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 7px;
+            color: #333;
+            margin: 30px;
+        }
+        .receipt-header p{
+            font-size: 12px;
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 2px;
+            color: #333;
+            font-weight: bold;
+            line-height: 18px;
+        }
+        .receipt-info {
+            margin-bottom: 60px;
+            padding-bottom: 60px;
+            border-bottom: 1px solid #ddd;
+        }
+        .receipt-info p {
+            line-height: 25px;
+            margin: 5px 0;
+            font-size: 15px;
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 2px;
+            color: #333;
+        }
+        .receipt-items {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .receipt-items th{
+            font-size: 15px;
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 2px;
+            color: #333;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .receipt-items td{
+            font-size: 14px;
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 2px;
+            color: #333;
+            text-align: center;
+        }
+
+        .receipt-items th, .receipt-items td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        .receipt-items th {
+            background-color: #f2f2f2;
+        }
+        .receipt-total {
+            text-align: right;
+        }
+        .receipt-total p {
+            font-size: 16px;
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 3px;
+            color: #333;
+            font-weight: bold;
+            margin-top: 30px;
+            text-align: center;
+        }
+        .footer-text {
+            text-align: center;
+            color: #777;
+            font-size: 14px;
+        }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .receipt-container, .receipt-container * {
+                visibility: visible;
+            }
+            .receipt-container {
+                left: 0;
+                top: 0;
+                background-color: #fff; /* Set background color for print */
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                height: 98vh;
+                position: center;
+                margin: 0 auto
+            }
+
+            /* Hide headers and footers */
+            @page {
+                size: auto; /* auto is the default value */
+                margin: 0; /* zero out the margins */
+            }
+        }
+
+        .print-button {
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            background-color: #333;
+            font-size: 12px;
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 2px;
+            color: white;
+            width: 8rem;
+            height: 2.5rem;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .print-button:hover {
+            opacity: 0.7;
+        }
+
+        @media print {
+            .print-button {
+                display: none; /* Hide the print button */
+            }
+
+            .back-button {
+                display: none;
+            }
+        }
+
+        .back-button {
+            text-decoration: none; 
+            color: #333;
+            font-size: 30px;
+        }
+
+        .back-button:hover{
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    {% load static %}
+    <div class="receipt-container">
+        <a href="{% url 'staff_history_booking' %}" class="back-button">
+            <i class="fas fa-arrow-left" style="margin-right: 10px;"></i>
+        </a>
+        <div class="receipt-header">
+            <img src="{% static "media/logo_MDPP.png" %}" alt="Logo MDPP">
+            <p>MAJLIS DAERAH PASIR PUTEH</p>
+            <p>16800 PASIR PUTEH, KELANTAN</p>
+            <h2>RESIT TEMPAHAN</h2>
+        </div>
+        <div class="receipt-info">
+            <p><strong>Id Tempahan:</strong> {{ tempahan.noTempahan }}</p>
+            <p><strong>Lokasi Tempahan:</strong> {{ tempahan.namatempat.namaTempat }}</p>
+            <p><strong>Tarikh Tempahan:</strong> {{ tempahan.tarikhTempahan }}</p>
+            <p><strong>Nama Penempah:</strong> {{ tempahan.namaPenempah }}</p>
+            <p><strong>No K/P:</strong> {{ tempahan.noKP }}</p>
+            <p><strong>No Telefon:</strong> {{ tempahan.noTelUtama }}</p>
+            <p><strong>Alamat:</strong> {{ tempahan.alamat }}</p>
+            <p><strong>Poskod:</strong> {{ tempahan.poskod }}</p>
+            <p><strong>Negeri:</strong> {{ tempahan.negeri }}</p>
+            <p><strong>Butiran Bayaran:</strong> {{ tempahan.butiranBayaran }}</p>
+        </div>
+        <table class="receipt-items">
+            <thead>
+                <tr>
+                    <th>Jenis Sewaan</th>
+                    <th>Tarikh Sewaan</th>
+                    <th>Slot Sewaan</th>
+                    <th>Waktu Sewaan</th>
+                    <th>Durasi Sewaan</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ tempahan.jenisSewaan }}</td>
+                    <td>
+                        {% for date in selected_date_list|dictsort:"date" %}
+                            {{ date }}
+                            {% if not forloop.last %}<br>{% endif %}
+                        {% endfor %}
+                    </td>
+                    <td>{{ tempahan.slotSewaan }}</td>
+                    <td>
+                        {% for time in selected_time_list %}
+                            {{ time }}
+                            {% if not forloop.last %}<br>{% endif %}
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {% if tempahan.jenisSewaan == 'Per Jam' %}
+                            {{ durasiSewaan }} Jam
+                        {% else %}
+                            {{ durasiSewaan }} Hari
+                        {% endif %}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="receipt-total">
+            <p><strong>Caj Sewaan:</strong> RM {{ cajSewaan }}</p>
+        </div>
+    </div>
+
+    <center><button onclick="window.print()" class="print-button">CETAK RESIT</button></center>
+</body>
+</html>

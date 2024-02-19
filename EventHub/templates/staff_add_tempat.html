@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Tempahan EventHub MDPP</title>
+    <link rel="icon" href="../static/media/favicon6.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+            text-decoration: none;
+            outline: none;
+            transition: all .2s linear;
+            -webkit-user-select: none;  
+            -moz-user-select: none;    
+            -ms-user-select: none;     
+            user-select: none;
+        }
+
+        body {
+            background-color: rgb(255, 255, 255);
+        }
+
+        .logos {
+            background-color: rgb(252, 252, 177);
+            height: 170px;
+        }
+        .logos img{
+            width: 100px;
+            margin-top: 20px;
+            cursor: default;
+        }
+
+        .logos h1 {
+            font-size: 17px;
+            font-family: 'Poppins', sans-serif;
+            margin-top: 10px;
+            cursor: default;
+            letter-spacing: 1px;
+            color: rgb(64, 64, 240);
+        }
+
+        .navigation_bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.8rem 9%;
+        }
+
+        .nav-left, .nav-right {
+            display: flex;
+            align-items: center;
+        }
+
+        #navbar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            list-style-type: none;
+            margin-left: 25.5rem;
+        }
+
+        #navbar li {
+            margin: 0 20px;
+        }
+
+        #navbar li a {
+            text-decoration: none;
+            color: #333;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px;
+            letter-spacing: 2px;
+            position: relative; /* Added for positioning the pseudo-element */
+        }
+
+        #navbar li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background-color: #333;
+            left: 50%;
+            bottom: -5px; /* Adjust as needed */
+            transition: width 0.3s ease, left 0.3s ease;
+        }
+
+        #navbar li a:hover::after {
+            width: 100%;
+            left: 0;
+        }
+
+        .profile {
+            width: 20px;
+            margin-right: 10px;
+        }
+
+        .logout-link {
+            text-decoration: none;
+            color: #333;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px;
+            letter-spacing: 2px;
+            position: relative;
+        }
+
+        .logout-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background-color: #333;
+            left: 50%;
+            bottom: -5px; /* Adjust as needed */
+            transition: width 0.3s ease, left 0.3s ease;
+        }
+
+        .logout-link:hover::after {
+            width: 100%;
+            left: 0;
+        }
+
+        /* Responsive design for smaller screens */
+        @media (max-width: 768px) {
+        .nav-left, .nav-right {
+        flex-direction: column;
+        align-items: flex-start;
+        }
+
+        #navbar {
+            flex-direction: column;
+        }
+
+        #navbar li {
+            margin: 10px 0;
+        }
+
+        .navigation_bar {
+            padding: 1rem;
+        }
+        }
+
+        #hrsatu{
+			border-top: 1px solid #959392;
+			opacity: 50%;
+			display: block;
+			margin-bottom: 0.5em;
+			margin-right: auto;
+       		margin-left: auto;
+       		width: 85%;
+		}
+
+        footer {
+            background-color: red;
+            color: #fff;
+            text-align: center; 
+            padding: 20px 0; 
+            font-family: 'Arial', sans-serif; 
+        }
+
+        footer p {
+            margin: 0; 
+            padding-bottom: 10px; 
+            letter-spacing: 1px;
+            font-size: 13px; 
+            margin-top: 10px;
+        }
+
+        footer .nama_sistem {
+            color: white; 
+            text-decoration: none; 
+            letter-spacing: 1px;
+            font-size: 14px;
+        }
+
+        .back {
+            margin: 40px;
+            display: flex;
+            justify-content: center;
+        }
+
+        h2 {
+            font-size: 35px;
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 3px;
+            color: #333;
+            text-align: center;
+            margin-left: 30px;
+        }
+
+        .add_booking {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px;
+            margin: 30px auto;
+            background-color: rgb(219, 230, 235);
+            border-radius: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 40%; /* Adjust width as needed */
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 2px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #333;
+            font-weight: 500;
+            font-size: 15px;
+            letter-spacing: 1px;
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+        }
+
+        .form-group input[type="text"] {
+            width: 100%;
+            height: 40px;
+            width: 360px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            background-color: rgb(239, 242, 244);
+        }
+
+        .form-group input[type="text"]:hover,
+        .form-group input[type="text"]:focus {
+            border-color: #ccc;
+        }
+
+        button {
+            border: #fff;
+            border-radius: 5px; 
+            font-weight: 500;
+            background-color: rgb(78, 78, 78);
+            color: white;
+            padding: 9px;
+            margin: 10px 0;
+            border: none;
+            cursor: pointer;
+            width: 100px;
+            text-align: center;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+
+        h3 {
+            text-align: center;
+            width: 400px;
+            padding: 12px;
+            border-radius: 5px;
+            background-color: rgb(247, 78, 78); 
+            color: white; 
+            font-size: 14px;
+            letter-spacing: 1px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .back-button {
+            text-decoration: none; 
+            color: #333;
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .back-button:hover{
+            opacity: 0.7;
+        }
+    </style>
+</head>
+
+<body>
+    {% load static %}
+    <div class="logos">
+        <center>
+            <img src="{% static "media/logo_MDPP.png" %}" alt="Logo MDPP">
+            <h1>MAJLIS DAERAH PASIR PUTEH</h1>            
+        </center>
+    </div> 
+
+    <nav class="navigation_bar">
+        <ul id="navbar">
+            <li><a href="{% url 'staff_history_booking' %}">Jejak Tempahan</a></li>
+            <li><a href="{% url 'maintain_tempat' %}">Pengurusan Tempat</a></li>
+        </ul>
+
+        <div class="nav-right">
+            <img class="profile" src="{% static 'media/profile.png' %}" alt="profile_icon">
+            <a href="{% url 'staff_login' %}" class="logout-link">Log Out</a>
+        </div>
+    </nav>
+
+    <hr id="hrsatu">
+
+
+    <div class="back">
+        <a href="{% url 'maintain_tempat' %}" class="back-button">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+    
+        <h2>Penambahan Lokasi</h2>
+    </div>
+
+    <div class="add_booking">
+        <form action="{% url 'staff_add_tempat' %}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="name">Nama Tempat:</label><br>
+                <input type="text" id="name" name="namaTempat" required>
+            </div>
+            <div class="form-group">
+                <label for="text">Caj Sewaan Per Hari(Siang):</label><br>
+                <input type="text" id="caj_hari_siang" name="cajSewaan_hari_siang" required>
+            </div>
+            <div class="form-group">
+                <label for="text">Caj Sewaan Per Hari(Malam):</label><br>
+                <input type="text" id="caj_hari_malam" name="cajSewaan_hari_malam" required>
+            </div>
+            <div class="form-group">
+                <label for="text">Caj Sewaan Per Jam(Siang):</label><br>
+                <input type="text" id="caj_jam_siang" name="cajSewaan_jam_siang" required>
+            </div>
+            <div class="form-group">
+                <label for="text">Caj Sewaan Per Jam(Malam):</label><br>
+                <input type="text" id="caj_jam_siang" name="cajSewaan_jam_malam" required>
+            </div> 
+            <div class="form-group">
+                <center>
+                    <a class="submitButton">
+                        <button id="submitButton" class="submitButton" type="submit" value="submit">TAMBAH</button>
+                    </a>
+                </center>
+            </div>
+        </form> 
+    </div>
+
+    {% if msg %}
+    <div class="message">
+        <center><h3>{{ msg }}</h3></center>
+    </div>
+    {% endif %}
+
+    <br><br><br><br>
+    <footer>
+        <a class="nama_sistem"> MDPP EventHub Reservations System</a><br><br>
+        <p>&copy;Hak Cipta Terpelihara Majlis Daerah Pasir Puteh</p>
+    </footer>
+</body>
+</html>

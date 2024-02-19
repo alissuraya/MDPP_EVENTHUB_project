@@ -1,0 +1,1 @@
+web: gunicorn mdpp_eventhub.wsgi --log-file -

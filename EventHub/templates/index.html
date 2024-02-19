@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Tempahan EventHub MDPP</title>
+    <link rel="icon" href="../static/media/favicon8.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+            text-decoration: none;
+            outline: none;
+            transition: all .2s linear;
+            -webkit-user-select: none;  
+            -moz-user-select: none;    
+            -ms-user-select: none;     
+            user-select: none;
+        }
+        
+        body {
+            background-color: rgb(255, 255, 255);
+        }
+
+        .logos {
+            background-color: rgb(252, 252, 177);
+            height: 170px;
+        }
+        .logos img{
+            width: 100px;
+            margin-top: 20px;
+            cursor: default;
+        }
+
+        .logos h1 {
+            font-size: 17px;
+            font-family: 'Poppins', sans-serif;
+            margin-top: 10px;
+            cursor: default;
+            letter-spacing: 1px;
+            color: rgb(64, 64, 240);
+        }
+
+        footer {
+            background-color: red;
+            color: #fff;
+            text-align: center; 
+            padding: 20px 0; 
+            font-family: 'Arial', sans-serif; 
+        }
+
+        footer p {
+            margin: 0; 
+            padding-bottom: 10px; 
+            letter-spacing: 1px;
+            font-size: 13px; 
+            margin-top: 10px;
+        }
+
+        footer .nama_sistem {
+            color: white; 
+            text-decoration: none; 
+            letter-spacing: 1px;
+            font-size: 14px; 
+        }
+
+        .navigation_bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.8rem 9%;
+        }
+
+        .nav-left, .nav-right {
+            display: flex;
+            align-items: center;
+        }
+
+        #navbar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            list-style-type: none;
+            margin-right: 7.7rem;
+        }
+
+        #navbar li {
+            margin: 0 20px;
+        }
+
+        #navbar li a {
+            text-decoration: none;
+            color: #333;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            position: relative; /* Added for positioning the pseudo-element */
+        }
+
+        #navbar li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background-color: #333;
+            left: 50%;
+            bottom: -5px; /* Adjust as needed */
+            transition: width 0.3s ease, left 0.3s ease;
+        }
+
+        #navbar li a:hover::after {
+            width: 100%;
+            left: 0;
+        }
+
+        .profile {
+            width: 20px;
+            margin-right: 10px;
+        }
+
+        .logout-link {
+            text-decoration: none;
+            color: #333;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px;
+            letter-spacing: 2px;
+            position: relative;
+        }
+
+        .logout-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background-color: #333;
+            left: 50%;
+            bottom: -5px; /* Adjust as needed */
+            transition: width 0.3s ease, left 0.3s ease;
+        }
+
+        .logout-link:hover::after {
+            width: 100%;
+            left: 0;
+        }
+
+        /* Responsive design for smaller screens */
+        @media (max-width: 768px) {
+        .nav-left, .nav-right {
+        flex-direction: column;
+        align-items: flex-start;
+        }
+
+        #navbar {
+            flex-direction: column;
+        }
+
+        #navbar li {
+            margin-right: 100px;
+        }
+
+        .navigation_bar {
+            padding: 1rem;
+        }
+        }
+
+        #hrsatu{
+			border-top: 1px solid #959392;
+			opacity: 50%;
+			display: block;
+			margin-bottom: 0.5em;
+			margin-right: auto;
+       		margin-left: auto;
+       		width: 85%;
+		}
+
+        .tempat-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: lightblue;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            overflow: hidden; /* Hide overflowing content */
+            height: 35px;
+            width: 500px;
+            margin-bottom: 30px;
+        }
+
+        .tempat-row:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            background-color: rgb(184, 226, 245);
+        }
+
+        .tempat-row .tempat-info h3 {
+            font-size: 20px;
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 3px;
+            color: #333;
+            margin-bottom: 3rem;
+        }
+
+        .tempat-info {
+            text-align: center;
+        }
+
+        .tempat-info h3 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .slider {
+            display: none; /* Initially hidden */
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: rgb(219, 230, 235);
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 40%; /* Adjusted for better visibility */
+            border-radius: 5px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            position: relative;
+        }
+
+        h2{
+            font-size: 36px;
+            letter-spacing: 3px;
+            color: #333;
+            font-family: 'Poppins', sans-serif;
+            padding-top: 40px;
+            text-align: center;
+            margin-bottom: 40px;
+            cursor: default;
+        }
+
+        h5{
+            font-size: 28px;
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 4px;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .close {
+            color: #aaaaaa;
+            position: absolute; /* Absolute positioning relative to modal-content */
+            top: 20px;
+            right: 32px; /* Adjust as needed */
+            font-size: 35px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .modal p {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .calendar {
+            background-color: transparent; /* Make the background transparent for simplicity */
+            border: none; /* Remove any borders */
+            cursor: pointer;
+            padding: 5px; /* Reduce padding for a smaller icon */
+            display: inline-flex; /* Aligns the icon and text properly */
+            align-items: center; /* Aligns items in the center */
+            justify-content: center; /* Center the content */
+            margin-top: 2.2rem;
+        }
+
+        .calendar i {
+            color: rgb(48, 108, 129); /* Subdued color for the icon */
+            font-size: 20px; /* Smaller icon size */
+        }
+
+        .calendar i:hover {
+            opacity: 0.7;
+        }
+
+        .calendar:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .book {
+            background-color: rgb(248, 40, 40);
+            font-size: 12px;
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 2px;
+            color: white;
+            padding: 12px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+
+        .book:hover {
+            opacity: 0.7;
+        }
+
+        .table-box {
+            overflow-x: auto;
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 1px;
+        }
+
+        /* Add this new CSS for the table */
+        .info-table {
+            border-collapse: collapse;
+            width:80%;
+            margin-top: 10px; /* Adjust as needed */
+            font-size: 14px;
+        }
+
+        .info-table td {
+            border: 1px solid black; /* Existing styles */
+            padding: 8px; /* Existing styles */
+            text-align: center; /* Center align text within table cell */
+            font-size: 13px;
+        }
+
+        .info-table th, .info-table td {
+            border: 1px solid black; /* Creates borders around cells */
+            padding: 8px; /* Adjust padding for cell content */
+        }
+
+        .action-container {
+            display: flex;
+            justify-content: center; 
+            
+        }
+
+        h4 {
+            font-size: 15px;
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 2px;
+            color: #333;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .sewaan-list {
+            padding-left: 20px; /* Adjust the padding to align the list as needed */
+        }
+
+        .sewaan-list li {
+            font-size: 13px;
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 1px;
+            color: #333;
+            line-height: 1.5rem;
+        }
+
+        /* Tooltip text */
+        .tooltip-text {
+            visibility: hidden;
+            width: 120px;
+            background-color: black;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 0;
+            position: absolute;
+            z-index: 1;
+            bottom: 110%;
+            left: 50%;
+            margin-left: -60px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .calendar:hover .tooltip-text {
+            visibility: visible;
+            opacity: 0.6;
+        }
+
+        h3 {
+            margin-top: 3rem;
+            font-size: 28px;
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 2px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        /* Updated existing .slider class */
+        .slider {
+            display: none; /* Initially hidden */
+            background-color: white; /* Optional: Change to suit your design */
+            padding: 20px; /* Add padding for internal spacing */
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
+        }
+
+        /* New styles for the date slider */
+        .date-slider {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr); /* 7 columns for a week */
+            gap: 10px; /* Space between grid items */
+            padding: 10px; /* Padding around the grid */
+            text-align: center; /* Center text in each grid item */
+        }
+
+        .date-slider div {
+            padding: 10px; /* Padding inside each date box */
+            background-color: #f0f0f0; /* Background of each date box */
+            border-radius: 5px; /* Rounded corners for date boxes */
+            cursor: pointer; /* Change cursor to indicate interactivity */
+            transition: background-color 0.3s; /* Smooth background transition on hover */
+        }
+
+        .date-slider div:hover {
+            background-color: #e0e0e0; /* Slightly darker on hover */
+        }
+
+        /* Style for the selected date */
+        .date-selected {
+            background-color: #4CAF50; /* Change color for selected date */
+            color: white; /* White text for better visibility */
+        }
+
+        .date-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr); /* 7 days in a week */
+            gap: 10px;
+            padding: 10px;
+        }
+
+        .grid-header {
+            display: contents; /* Align headers with days */
+        }
+
+        .grid-item {
+            padding: 10px;
+            background-color: #f0f0f0;
+            text-align: center;
+            border-radius: 5px;
+        }
+
+        .grid-item.empty {
+            background-color: transparent;
+        }
+    </style>
+</head>
+<body>
+    {% load static %}
+    <div class="logos">
+        <center>
+            <img src="{% static "media/logo_MDPP.png" %}" alt="Logo MDPP">
+            <h1>MAJLIS DAERAH PASIR PUTEH</h1>            
+        </center>
+    </div>
+
+    <nav class="navigation_bar">
+        <ul id="navbar" style="margin-left: 260px; padding: 10px;">
+            <li><a href="{% url 'index' %}">Pengurusan Tempahan</a></li>
+            <li><a href="{% url 'staff_history_booking' %}">Jejak Tempahan</a></li>
+            <li><a href="{% url 'staff_manage_date' %}">Pengurusan Tarikh</a></li>
+            <li><a href="{% url 'maintain_tempat' %}">Pengurusan Lokasi</a></li>
+        </ul>
+
+        <div class="nav-right">
+            <img class="profile" src="{% static 'media/profile.png' %}" alt="profile_icon">
+            <a href="{% url 'staff_login' %}" class="logout-link">Log Out</a>
+        </div>
+    </nav>
+
+    <hr id="hrsatu">
+
+    <section>
+        <center><h2>Senarai Dewan Dan Padang MDPP</h2></center>
+    </section>
+
+    {% for tempat in tempat_list %}
+    <center><div class="tempat-row" onclick="openModal('modal{{ tempat.idTempat }}')">
+        <div class="tempat-info">
+            <h3>{{ tempat.namaTempat }}</h3>
+        </div>
+    </div></center>
+
+    <div id="modal{{ tempat.idTempat }}" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal{{ tempat.idTempat }}')">&times;</span>
+            
+            <!-- Slider for Information -->
+            <div id="infoSlider{{ tempat.idTempat }}" class="slider">
+                <center><h5>{{ tempat.namaTempat }}</h5></center>
+                <div class="table-box">
+                    <center>
+                        <table class="info-table">
+                            <tr>
+                                <th>Caj/Bayaran</th>
+                                <th>Siang</th>
+                                <th>Malam</th>
+                            </tr>
+
+                            <tr>
+                                <td>Sewaan Per Hari</td>
+                                <td>
+                                    {% if tempat.cajSewaan_hari_siang|cut:"-" %}
+                                        RM{{ tempat.cajSewaan_hari_siang }}.00
+                                    {% else %}
+                                        {{ tempat.cajSewaan_hari_siang }}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if tempat.cajSewaan_hari_malam|cut:"-" %}
+                                        RM{{ tempat.cajSewaan_hari_malam }}.00
+                                    {% else %}
+                                        {{ tempat.cajSewaan_hari_malam }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Sewaan Per Jam</td>
+                                <td>
+                                    {% if tempat.cajSewaan_jam_siang|cut:"-" %}
+                                        RM{{ tempat.cajSewaan_jam_siang }}.00
+                                    {% else %}
+                                        {{ tempat.cajSewaan_jam_siang }}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if tempat.cajSewaan_jam_malam|cut:"-" %}
+                                        RM{{ tempat.cajSewaan_jam_malam }}.00
+                                    {% else %}
+                                        {{ tempat.cajSewaan_jam_malam }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+
+                        </table><br>
+                    </center>
+                </div>
+                <div class="notes">
+                    <h4>Syarat-syarat sewaan:</h4>
+                    <ul class="sewaan-list">
+                        <li>Sewaan pagi bermula jam 8.00 pagi dan sewaan malam bermula jam 6.00 petang.</li>
+                        <li>Sewaan per hari bermula jam 8.00 pagi sehingga jam 6.00 petang sahaja <br> (10 jam).</li>
+                        <li>Sewaan malam akan dikenakan caj berdasarkan penggunaan per jam.</li>
+                        <li>Sewaan dewan hanya disertakan dewan sahaja.</li>
+                    </ul>
+                </div>
+                <div class="action-container">
+                    <center><button class="book" onclick="window.location.href='{% url 'booking_process' tempat.idTempat %}'">
+                        <i class="fa fa-book"></i> TEMPAH
+                    </button></center> 
+                </div>           
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    <br><br>
+    <footer>
+        <a class="nama_sistem"> MDPP EventHub Reservations System</a><br><br>
+        <p>&copy;Hak Cipta Terpelihara Majlis Daerah Pasir Puteh</p>
+    </footer>
+
+    <script>
+        function openModal(modalId) {
+            var modal = document.getElementById(modalId);
+            modal.style.display = 'block';
+    
+            var infoSlider = modal.querySelector('.slider');
+            infoSlider.style.display = 'block';
+    
+            var dateSlider = document.getElementById('dateSlider');
+            dateSlider.style.display = 'none';
+    
+            // Extract tempatId from modalId and calculate total
+            var tempatId = modalId.replace('modal', '');
+            calculateTotal(tempatId);
+        }
+    
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+    
+        function toggleSlider(modalId) {
+            var modal = document.getElementById(modalId);
+            var infoSlider = modal.querySelector('.slider');
+            var dateSlider = document.getElementById('dateSlider');
+    
+            if (infoSlider.style.display === 'block') {
+                infoSlider.style.display = 'none';
+                dateSlider.style.display = 'block';
+            } else {
+                infoSlider.style.display = 'block';
+                dateSlider.style.display = 'none';
+            }
+        }
+    
+        function calculateTotal(tempatId) {
+            var total = 0;
+            var charges = document.querySelectorAll('#modal' + tempatId + ' .info-table tr:not(:first-child)');
+    
+            charges.forEach(function(charge) {
+                var amount = parseFloat(charge.cells[1].textContent);
+                if (!isNaN(amount)) {
+                    total += amount;
+                }
+            });
+    
+            document.querySelector('#totalAmount' + tempatId).textContent = total.toFixed(2);
+        }
+    
+        function bookNow() {
+            // Implement booking logic here
+            alert('Booking functionality to be implemented.');
+        }
+    
+            // Function to initialize the date slider with the current month's dates
+            function initDateSlider() {
+                const gridContainer = document.querySelector('.date-grid');
+                gridContainer.innerHTML = ''; // Clear existing content
+    
+                // Assuming you want to display the current month
+                const now = new Date();
+                const year = now.getFullYear();
+                const month = now.getMonth();
+    
+                // Get the first and last day of the month
+                const firstDay = new Date(year, month, 1);
+                const lastDay = new Date(year, month + 1, 0);
+    
+                // Fill in the blanks for days of the week before the first day
+                for (let i = 0; i < firstDay.getDay(); i++) {
+                    const emptyDiv = document.createElement('div');
+                    emptyDiv.className = 'grid-item empty';
+                    gridContainer.appendChild(emptyDiv);
+                }
+    
+                // Fill in the actual days
+                for (let day = 1; day <= lastDay.getDate(); day++) {
+                    const dayDiv = document.createElement('div');
+                    dayDiv.className = 'grid-item';
+                    dayDiv.textContent = day;
+                    dayDiv.onclick = function() {
+                        // Handle date selection here
+                        alert('Date ' + day + ' selected.');
+                    };
+                    gridContainer.appendChild(dayDiv);
+                }
+            }
+    
+            // Initialize the date slider on page load
+            document.addEventListener('DOMContentLoaded', (event) => {
+                initDateSlider();
+            });
+        </script>
+</body>
+</html>

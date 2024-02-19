@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Tempahan EventHub MDPP</title>
+    <link rel="icon" href="../static/media/favicon1.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+            text-decoration: none;
+            outline: none;
+            transition: all .2s linear;
+            -webkit-user-select: none;  
+            -moz-user-select: none;    
+            -ms-user-select: none;     
+            user-select: none;
+        }
+        
+        body {
+            background-color: rgb(255, 255, 255);
+        }
+
+        .logos {
+            background-color: rgb(252, 252, 177);
+            height: 170px;
+        }
+        .logos img{
+            width: 100px;
+            margin-top: 20px;
+            cursor: default;
+        }
+
+        .logos h1 {
+            font-size: 20px;
+            font-family: 'Poppins', sans-serif;
+            margin-top: 10px;
+            cursor: default;
+            letter-spacing: 1px;
+            color: rgb(64, 64, 240);
+        }
+
+        footer {
+            background-color: red;
+            color: #fff;
+            text-align: center; 
+            padding: 20px 0; 
+            font-family: 'Arial', sans-serif; 
+            height: 8.5rem;
+        }
+
+        footer p {
+            margin: 0; 
+            padding-bottom: 10px; 
+            letter-spacing: 1px;
+            font-size: 13px; 
+            margin-top: 10px;
+        }
+
+        footer .ruangan_admin {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+            font-weight: bold;
+        }
+
+        footer .ruangan_admin:hover {
+            opacity: 0.7; 
+            text-decoration: underline;
+        }
+
+        footer .ruangan_admin img {
+            width: 25px;
+            height: 25px;
+        }
+
+        footer .nama_sistem {
+            color: white; 
+            text-decoration: none; 
+            letter-spacing: 1px;
+            font-size: 14px; 
+        }
+
+        /* Styles for both step indicators */
+        .step-indicator-1,
+        .step-indicator-2 {
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            margin: 30px;
+            padding: 0;
+            width: 50%;
+        }
+
+        /* Individual step style */
+        .step-indicator-1 li,
+        .step-indicator-2 li {
+            font-family: 'Poppins', sans-serif;
+            font-weight: bold;
+            font-size: 13px;
+            letter-spacing: 1px;
+            position: relative;
+            flex-basis: 50%; /* Adjust this value based on the number of steps */
+            text-align: center;
+            color: #ccc; /* Default text color for inactive steps */
+        }
+
+        /* Step circles */
+        .step-indicator-1 li::before,
+        .step-indicator-2 li::before {
+            content: '';
+            background-color: #ccc; /* Default circle color for inactive steps */
+            border-radius: 50%;
+            width: 20px;
+            height:20px;
+            display: block;
+            margin: 0 auto 10px;
+            line-height: 25px;
+            color: #333;
+        }
+
+        /* Connecting lines */
+        .step-indicator-1 li::after,
+        .step-indicator-2 li::after {
+            content: '';
+            position: absolute;
+            width: calc(100% - 20px); /* Adjust the width to exclude the width of the circle */
+            height: 2px;
+            background-color: #ccc; /* Default line color for inactive steps */
+            top: 12px;
+            left: 50%; /* Align the line to the center of the circle */
+            transform: translateX(-50%); /* Move the line to the left by half of its width */
+            z-index: -1;
+        }
+
+        /* Hide the connecting line for the first step */
+        .step-indicator-1 li:first-child::after {
+            content: none;
+        }
+
+        /* Active or completed state for the first step */
+        .step-indicator-1 li:first-child {
+            color: #333; /* Change the text color to indicate active or completed state */
+        }
+
+        .step-indicator-1 li:first-child::before {
+            background-color: lightblue; /* Change the circle color to indicate active or completed state */
+        }
+
+        /* Active or completed state for the second step */
+        .step-indicator-2 li:nth-child(2) {
+            color: #333; /* Change the text color to indicate active or completed state */
+        }
+
+        .step-indicator-2 li:nth-child(2)::before {
+            background-color: lightblue; /* Change the circle color to indicate active or completed state */
+        }
+
+        /* Active or completed state for the line between steps */
+        .step-indicator-1 li:first-child::after,
+        .step-indicator-2 li:nth-child(2)::after {
+            background-color: lightblue; /* Change the line color to indicate active or completed state */
+        }
+
+        .booking-maklumat-container {
+            background-color: rgb(219, 230, 235);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px auto;
+            width: 40%;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .back {
+            margin: 40px;
+            display: flex;
+            justify-content: center;
+        }
+
+        h2 {
+            font-size: 28px;
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 2px;
+            color: #333;
+            text-align: center;
+            margin-left: 30px;
+        }
+
+        .booking-maklumat-container label {
+            display: block;
+            margin-bottom: 10px;
+            color: #333;
+            font-weight: 200;
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px;
+            letter-spacing: 1px;
+            margin-left: 95px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        select {
+            display: block; /* Ensures the element is treated as a block-level element */
+            margin-left: auto;
+            margin-right: auto;
+            width: 70%; /* Adjust the width as needed */
+            padding: 12px 20px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px;
+            letter-spacing: 1px;
+            background-color: rgb(239, 242, 244);
+            color: #333;
+        }
+
+        #negeri {
+            display: block; /* Ensures the element is treated as a block-level element */
+            margin-left: auto;
+            margin-right: auto;
+            width: 70%; /* Adjust the width as needed */
+            padding: 12px 20px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px;
+            letter-spacing: 1px;
+            background-color: rgb(239, 242, 244);
+            color: #333;
+        }
+
+        .booking_tarikh_container {
+            background-color: rgb(219, 230, 235);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px auto;
+            width: 40%;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .booking_tarikh_container {
+                width: 90%;
+            }
+        }
+
+
+        #overlay {
+            position: fixed;
+            display: none;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
+            z-index: 2; /* Ensures that the overlay is below the modal */
+        }
+
+        #rentalChoiceModal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            z-index: 1000;
+            display: none; /* Hide until it's triggered */
+            width: 35%;
+            height: 35%;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            border-radius: 10px;
+            animation: fadeIn 0.5s;
+        }
+
+        #rentalChoiceModal h3 {
+            color: #333;
+            font-size: 20px;
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 2px;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .hidden-checkbox {
+            display: none;
+        }
+
+        .tick-button {
+            display: inline-block;
+            margin: 5px;
+        }
+
+        .custom-button {
+            display: inline-block;
+            padding: 13px 25px;
+            background-color: rgb(96, 138, 197);
+            font-size: 15px;
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 1px;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .custom-button:hover {
+            opacity: 0.8;
+        }
+
+        .hidden-checkbox:checked + .custom-button {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .calendar {
+            text-align: center;
+            margin: 20px auto;
+            width: 80%;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .month {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 17px;
+            background-color: rgb(137, 152, 172);
+            color: black;
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 2px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .month button {
+            background: none;
+            color: black;
+            border: none;
+            font-size: 25px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .month button:hover{
+            opacity: 0.5;
+        }
+
+        .weekdays {
+            display: flex;
+            background-color: #f7f7f7;
+            padding: 10px 0;
+        }
+
+        .weekdays div {
+            flex: 1;
+            padding: 5px 0;
+            text-align: center;
+            border-right: 1px solid #ccc;
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        .weekdays div:last-child {
+            border-right: none;
+        }
+
+        .days {
+            display: flex;
+            flex-wrap: wrap;
+            background-color: #fff;
+        }
+
+        .days .day {
+            width: calc(100% / 7);
+            padding: 15px 0;
+            cursor: pointer;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .days .day.blank {
+            background-color: white; /* Change to white */
+            color: #ccc; /* Optional: Change text color if there are any texts to be shown */
+            cursor: default;
+        }
+
+        .days .day:hover {
+            background-color: lightsteelblue;
+        }
+
+        /* Responsive Design Adjustments */
+        @media (max-width: 768px) {
+            .calendar {
+                width: 95%;
+            }
+        }
+
+        .days .day.selected {
+            background-color: lightsteelblue; /* Change as needed */
+        }
+
+        .day.past {
+            color: #ccc;
+            pointer-events: none;
+        }
+
+        #timeSlots {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .timeSlotChoice {
+            margin-bottom: 15px;
+        }
+
+        .timeSlotChoice label {
+            color: #333;
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 2px;
+            font-size: 15px;
+            
+        }
+
+        #timeOfDay {
+            display: inline-flex;
+            margin-left: 10px;
+            margin-bottom: 10px;
+        }
+
+        #timeOfDay label {
+            display: inline-block;
+            margin: 0 10px;
+            background-color: white;
+            color: #333;
+            padding: 7px 17px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        #timeOfDay label:hover {
+            background-color: lightsteelblue;
+            transform: scale(1.05);
+        }
+
+        #timeOfDay input[type="radio"] {
+            display: none;
+        }
+
+        #timeOfDay input[type="radio"]:checked + label {
+            background-color: rgb(97, 186, 221);
+            color: white;
+        }
+
+        select {
+            width: 220px; 
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 13px;
+            letter-spacing: 2px;
+            background-color: white;
+            cursor: pointer;
+            color: #333;
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        /* Optionally style the option elements */
+        option {
+            padding: 10px;
+        }
+
+        /* Centering the select box */
+        .center-select {
+            text-align: center;
+        }
+        
+        #timeSiang input[type="checkbox"] {
+            display: none;
+        }
+
+        #timeSiang input[type="checkbox"]:checked + label {
+            background-color: rgb(97, 186, 221);
+            color: white;
+        }
+
+        #timeMalam input[type="checkbox"] {
+            display: none;
+        }
+
+        #timeMalam input[type="checkbox"]:checked + label {
+            background-color: rgb(97, 186, 221);
+            color: white;
+        }
+
+        .timeChoice {
+            color: #333;
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 2px;
+            font-size: 15px;
+            display: flex;
+            margin-left: 6.7rem;
+        }
+
+        #timeSiang .time {
+            cursor: pointer;
+            background-color: white;
+            color: #333;
+            border-radius: 4px;
+            line-height: 45px;
+            padding: 5px 17px;
+            font-size: 15px;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            letter-spacing: 2px;
+            margin-left: 30px;
+        }
+
+        #timeSiang .time:hover {
+            background-color: lightsteelblue;
+            transform: scale(1.05);
+        }
+
+        #timeMalam .time {
+            cursor: pointer;
+            background-color: white;
+            color: #333;
+            border-radius: 4px;
+            line-height: 45px;
+            padding: 5px 17px;
+            font-size: 15px;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            letter-spacing: 2px;
+            margin-left: 30px;
+        }
+
+        #timeMalam .time:hover {
+            background-color: lightsteelblue;
+            transform: scale(1.05);
+        }
+
+        .agreement{
+            text-align: center;
+            justify-content: center;
+            display: flex;
+        }
+
+        .agreement [type="checkbox"]:hover {
+            background-color: #ddd; /* Change to your desired hover color */
+        }
+
+        .agree{
+            color: #333;
+            font-size: 12px;
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 2px;
+            font-weight: bold;
+            margin-top: 15px;
+            margin-left: 20px;
+        }
+
+        #next {
+            margin-top: 1rem;
+            margin-bottom: 4rem;
+            background-color: #333;
+            font-size: 12px;
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 2px;
+            color: white;
+            width: 7rem;
+            height: 2.5rem;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            
+        }
+
+        #next:disabled {
+            opacity: 0.9;
+            cursor: not-allowed;
+        }
+
+        #next:hover {
+            opacity: 0.7;
+        }
+
+        .back-button {
+            text-decoration: none; 
+            color: #333;
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .back-button:hover{
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    {% load static %}
+    <div class="logos">
+        <center>
+            <img src="{% static "media/logo_MDPP.png" %}" alt="Logo MDPP">
+            <h1>MAJLIS DAERAH PASIR PUTEH</h1>            
+        </center>
+    </div>
+
+    <div class="back">
+        <a href="{% url 'index' %}" class="back-button">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+    
+        <h2>Lokasi Tempahan : {{ tempat.namaTempat }}</h2>
+    </div>
+
+    <form action="{% url 'booking_process' tempat.idTempat %}" method="post">
+        <div id="overlay" style="display: none;"></div>
+        <div id="rentalChoiceModal" style="display: none;">
+            <h3>Pilih Jenis Sewaan:</h3><br>
+            <center><label class="tick-button">
+                <input type="checkbox" id="rentByDay" class="hidden-checkbox">
+                <span class="custom-button">Sewaan Per Hari</span>
+            </label></center><br>
+            <center><label class="tick-button">
+                <input type="checkbox" id="rentByHour" class="hidden-checkbox">
+                <span class="custom-button">Sewaan Per Jam</span>
+            </label></center>
+        </div>
+
+        <div class="booking_form">
+            <div class="booking-maklumat-container">
+                {% csrf_token %}
+                <center>
+                    <ol class="step-indicator-1">
+                        <li>Isi Maklumat</li>
+                        <li class="active">Pilih Tarikh</li>
+                    </ol>
+                </center>
+                <label for="namaPenempah">Nama Penempah:</label>
+                <input type="text" id="namaPenempah" name="namaPenempah" required>
+    
+                <label for="noKP">No K/P:</label>
+                <input type="text" id="noKP" name="noKP" required>
+    
+                <label for="noTelUtama">No Telefon:</label>
+                <input type="tel" id="noTelUtama" name="noTelUtama" required>
+    
+                <label for="alamat">Alamat:</label>
+                <input type="text" id="alamat" name="alamat" required>
+    
+                <label for="poskod">Poskod:</label>
+                <input type="text" id="poskod" name="poskod" required>
+    
+                <label for="negeri">Negeri:</label>
+                <select id="negeri" name="negeri" required>
+                    <option value="">--Pilih Negeri--</option>
+                    <option value="Johor">Johor</option>
+                    <option value="Kedah">Kedah</option>
+                    <option value="Kelantan">Kelantan</option>
+                    <option value="Melaka">Melaka</option>
+                    <option value="Negeri Sembilan">Negeri Sembilan</option>
+                    <option value="Pahang">Pahang</option>
+                    <option value="Penang">Penang</option>
+                    <option value="Perak">Perak</option>
+                    <option value="Perlis">Perlis</option>
+                    <option value="Sabah">Sabah</option>
+                    <option value="Sarawak">Sarawak</option>
+                    <option value="Selangor">Selangor</option>
+                    <option value="Terengganu">Terengganu</option>
+                    <option value="Kuala Lumpur">Kuala Lumpur</option>
+                    <option value="Labuan">Labuan</option>
+                    <option value="Putrajaya">Putrajaya</option>
+                </select>
+            </div>
+
+
+            <div class="booking_tarikh_container">
+                <center>
+                    <ol class="step-indicator-2">
+                        <li>Isi Maklumat</li>
+                        <li class="active">Pilih Tarikh</li>
+                    </ol>
+                </center>
+                <div class="calendar">
+                    <div class="month" id="monthYear" id="bookingForm">
+                        <button type="button" id="prevMonth">&lt;</button>
+                        <span id="monthYearText"></span>
+                        <button type="button" id="nextMonth">&gt;</button>
+                    </div>
+                    <div class="weekdays">
+                        <div>Ahad</div>
+                        <div>Isnin</div>
+                        <div>Selasa</div>
+                        <div>Rabu</div>
+                        <div>Khamis</div>
+                        <div>Jumaat</div>
+                        <div>Sabtu</div>
+                    </div>
+                    <div class="days" id="days"></div>
+                </div>
+    
+                <div id="timeSlots">
+                    <div class="timeSlotChoice">
+                        <label for="timeSlot">Pilih Slot Sewaan:</label>
+                        <div id="timeOfDay">
+                            <input type="radio" id="siang" name="timeSlot" value="siang">
+                            <label for="siang">Siang</label>
+                            <input type="radio" id="malam" name="timeSlot" value="malam">
+                            <label for="malam">Malam</label>
+                        </div>
+                    </div>
+                        
+                    <div class="timeChoice">
+                        <label class="labelTime">Pilih Waktu Sewaan:</label><br>
+                        <div id="timeSiang" class="timeSlotOption center-select" style="display: none;">
+                            <input type="checkbox" id="siangTime8-9" name="siangTime" value="8.00am-9.00am">
+                            <label for="siangTime8-9" class="time">8.00am-9.00am</label><br>
+                            <input type="checkbox" id="siangTime9-10" name="siangTime" value="9.00am-10.00am">
+                            <label for="siangTime9-10" class="time">9.00am-10.00am</label><br>
+                            <input type="checkbox" id="siangTime10-11" name="siangTime" value="10.00am-11.00am">
+                            <label for="siangTime10-11" class="time">10.00am-11.00am</label><br>
+                            <input type="checkbox" id="siangTime11-12" name="siangTime" value="11.00am-12.00pm">
+                            <label for="siangTime11-12" class="time">11.00am-12.00pm</label><br>
+                            <input type="checkbox" id="siangTime12-1" name="siangTime" value="12.00pm-1.00pm">
+                            <label for="siangTime12-1" class="time">12.00pm-1.00pm</label><br>
+                            <input type="checkbox" id="siangTime1-2" name="siangTime" value="1.00pm-2.00pm">
+                            <label for="siangTime1-2" class="time">1.00pm-2.00pm</label><br>
+                            <input type="checkbox" id="siangTime2-3" name="siangTime" value="2.00pm-3.00pm">
+                            <label for="siangTime2-3" class="time">2.00pm-3.00pm</label><br>
+                            <input type="checkbox" id="siangTime3-4" name="siangTime" value="3.00pm-4.00pm">
+                            <label for="siangTime3-4" class="time">3.00pm-4.00pm</label><br>
+                            <input type="checkbox" id="siangTime4-5" name="siangTime" value="4.00pm-5.00pm">
+                            <label for="siangTime4-5" class="time">4.00pm-5.00pm</label><br>
+                            <input type="checkbox" id="siangTime5-6" name="siangTime" value="5.00pm-6.00pm">
+                            <label for="siangTime5-6" class="time">5.00pm-6.00pm</label><br>
+                        </div>                
+                        
+                        <div id="timeMalam" class="timeSlotOption center-select" style="display: none;">
+                            <input type="checkbox" id="malamTime6-7" name="malamTime" value="6.00pm-7.00pm">
+                            <label for="malamTime6-7" class="time">6.00pm-7.00pm</label><br>
+                            <input type="checkbox" id="malamTime7-8" name="malamTime" value="7.00pm-8.00pm">
+                            <label for="malamTime7-8" class="time">7.00pm-8.00pm</label><br>
+                            <input type="checkbox" id="malamTime8-9" name="malamTime" value="8.00pm-9.00pm">
+                            <label for="malamTime8-9" class="time">8.00pm-9.00pm</label><br>
+                            <input type="checkbox" id="malamTime9-10" name="malamTime" value="9.00pm-10.00pm">
+                            <label for="malamTime9-10" class="time">9.00pm-10.00pm</label><br>
+                            <input type="checkbox" id="malamTime10-11" name="malamTime" value="10.00pm-11.00pm">
+                            <label for="malamTime10-11" class="time">10.00pm-11.00pm</label><br>
+                            <input type="checkbox" id="malamTime11-12" name="malamTime" value="11.00pm-12.00am">
+                            <label for="malamTime11-12" class="time">11.00pm-12.00am</label><br>
+                        </div> 
+                    </div>        
+                </div>       
+            </div>
+
+            <input type="hidden" name="selectedDate" id="selectedDate" value="{{ selectedDate|join:',' }}" {% if form_submitted %}disabled{% endif %}>
+            <input type="hidden" name="slotSewaan" id="slotSewaan" value="">
+            <input type="hidden" name="selectedTime" id="selectedTime" value="{{ selectedTime }}" {% if form_submitted %}disabled{% endif %}>
+            <input type="hidden" name="jenisSewaan" id="jenisSewaan" value="">
+
+            </div>
+
+            <div class="agreement">
+                <center><input type="checkbox" id="agreeCheckbox" onchange="toggleButton()"></center>
+                <center><label for="agree" class="agree">SAYA BERSETUJU UNTUK MEMBUAT TEMPAHAN</label></center>
+            </div>
+            <center><button id="next" type="submit" disabled>TEMPAH</button></center>
+        </div> 
+    </form>
+
+    <footer><br>
+        <a href="{% url 'staff_login' %}" class="ruangan_admin">
+            <img class="profile" src="{% static "media/profile_icon.png" %}" alt="profile_icon">
+            <span class="profile-text">Ruangan Admin</span>
+        </a><br>
+        <a class="nama_sistem"> MDPP EventHub Reservations System</a><br><br>
+        <p>&copy;Hak Cipta Terpelihara Majlis Daerah Pasir Puteh</p><br>
+    </footer>
+
+    <script>
+         function disableInputs() {
+        document.getElementById('selectedDate').disabled = true;
+        document.getElementById('selectedTime').disabled = true;
+    }
+
+    // Check if the form has been submitted
+    window.onload = function() {
+        var formSubmitted = "{{ form_submitted }}"; // Get the value from Django template
+        if (formSubmitted === "True") {
+            disableInputs(); // Call the function to disable inputs
+        }
+    };
+
+        document.addEventListener('DOMContentLoaded', function () {
+            let idTempat = document.querySelector('form').getAttribute('data-idtempat');
+            let currentDate = new Date();
+            let selectedDates = [];
+            let jenisSewaan = ""; // "daily" or "hourly"
+            let slotSewaan = ""; // "Siang" or "Malam"
+            let selectedTime = "";
+    
+            function updateNextButtonState() {
+                const nextButton = document.getElementById('next');
+                const isDateSelected = selectedDates.length > 0;
+                const isRentalTypeSelected = jenisSewaan === "Per Hari" || jenisSewaan === "Per Jam";
+                const isTimeSlotSelected = jenisSewaan === "Per Jam" ? getSelectedTimes().length > 0 : true;
+                const isAgreementChecked = document.getElementById('agreeCheckbox').checked;
+    
+                // Check if all the form fields are filled and the agreement checkbox is checked
+                const isFormFilled = validateMaklumatForm() && validateTarikhForm() && isAgreementChecked;
+    
+                nextButton.disabled = !(isDateSelected && isRentalTypeSelected && isTimeSlotSelected && isFormFilled && isAgreementChecked);
+            }
+    
+            function validateMaklumatForm() {
+                const namaPenempah = document.getElementById('namaPenempah').value.trim();
+                const noKP = document.getElementById('noKP').value.trim();
+                const noTelUtama = document.getElementById('noTelUtama').value.trim();
+                const alamat = document.getElementById('alamat').value.trim();
+                const poskod = document.getElementById('poskod').value.trim();
+                const negeri = document.getElementById('negeri').value;
+    
+                return (namaPenempah !== '' && noKP !== '' && noTelUtama !== '' && alamat !== '' && poskod !== '' && negeri !== '');
+            }
+    
+            function validateTarikhForm() {
+                // Validation logic for date selection, if needed
+                return selectedDates.length > 0;
+            }
+    
+            // Update next button state whenever the agreement checkbox state changes
+            document.getElementById('agreeCheckbox').addEventListener('change', updateNextButtonState);
+    
+            function getSelectedTimes() {
+                let selectedTimes = [];
+    
+                document.querySelectorAll('#timeSiang input[type="checkbox"]:checked').forEach(checkbox => {
+                    selectedTimes.push(checkbox.value);
+                });
+    
+                document.querySelectorAll('#timeMalam input[type="checkbox"]:checked').forEach(checkbox => {
+                    selectedTimes.push(checkbox.value);
+                });
+    
+                return selectedTimes;
+            }
+    
+            function updateMonthYear() {
+                const monthNames = ["Januari", "Februari", "Mac", "April", "Mei", "Jun", "Julai", "Ogos", "September", "Oktober", "November", "Disember"];
+                document.getElementById('monthYearText').textContent = `${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
+            }
+    
+            function changeMonth(increment) {
+                currentDate.setMonth(currentDate.getMonth() + increment);
+                selectedDates = []; // Clear selected dates when changing months
+                updateCalendar();
+            }
+    
+            function updateCalendar() {
+                updateMonthYear();
+                createCalendar();
+            }
+    
+            function createCalendar() {
+                const daysContainer = document.getElementById('days');
+                daysContainer.innerHTML = '';
+    
+                const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+                const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
+    
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+    
+                for (let i = 0; i < firstDayOfMonth.getDay(); i++) {
+                    let blankDay = document.createElement('div');
+                    blankDay.classList.add('day', 'blank');
+                    daysContainer.appendChild(blankDay);
+                }
+    
+                for (let i = 1; i <= daysInMonth; i++) {
+                    let day = document.createElement('div');
+                    day.classList.add('day');
+                    day.textContent = i;
+    
+                    const dateBeingCreated = new Date(currentDate.getFullYear(), currentDate.getMonth(), i);
+                    if (dateBeingCreated < today) {
+                        day.classList.add('past');
+                    } else {
+                        day.addEventListener('click', function () {
+                            selectDate(i);
+                        });
+                    }
+    
+                    if (selectedDates.includes(i)) {
+                        day.classList.add('selected');
+                    }
+    
+                    daysContainer.appendChild(day);
+                }
+            }
+    
+            function resetTimeSelection() {
+                const siangCheckboxes = document.querySelectorAll('#timeSiang input[type="checkbox"]');
+                const malamCheckboxes = document.querySelectorAll('#timeMalam input[type="checkbox"]');
+    
+                siangCheckboxes.forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+    
+                malamCheckboxes.forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+    
+                document.getElementById('timeSiang').style.display = 'none';
+                document.getElementById('timeMalam').style.display = 'none';
+            }
+    
+            function selectDate(day) {
+                const fullDate = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    
+                if (jenisSewaan === "Per Hari") {
+                    // For Per Hari, add the selected date to the array
+                    if (selectedDates.length > 0) {
+                        // Get the last selected date
+                        const lastSelectedDate = selectedDates[selectedDates.length - 1];
+                        const lastSelectedDay = new Date(lastSelectedDate).getDate();
+                        const selectedDay = new Date(fullDate).getDate();
+                        const startDate = new Date(lastSelectedDate);
+                        startDate.setDate(startDate.getDate() + 1);
+    
+                        // If the clicked date is after the last selected date, select all dates in between
+                        if (selectedDay > lastSelectedDay) {
+                            for (let d = startDate; d <= new Date(fullDate); d.setDate(d.getDate() + 1)) {
+                                selectedDates.push(new Date(d).toISOString().slice(0, 10));
+                            }
+                        } else {
+                            // If the clicked date is before the last selected date, deselect all dates in between
+                            for (let d = new Date(fullDate); d < startDate; d.setDate(d.getDate() + 1)) {
+                                const index = selectedDates.findIndex(date => date === new Date(d).toISOString().slice(0, 10));
+                                if (index !== -1) {
+                                    selectedDates.splice(index, 1);
+                                }
+                            }
+                        }
+                    } else {
+                        // If no dates are selected, simply add the clicked date
+                        selectedDates.push(fullDate);
+                    }
+                } else if (jenisSewaan === "Per Jam") {
+                    // Clear selectedDates array and add the clicked date
+                    selectedDates = [fullDate];
+                }
+    
+                // Update calendar UI to reflect new state of selectedDates
+                updateCalendarUI();
+            }
+    
+            function updateCalendarUI() {
+                // Your existing logic to refresh the calendar UI, highlighting selected days
+                const days = document.querySelectorAll('.day');
+                days.forEach(day => {
+                    const fullDate = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(day.textContent).padStart(2, '0')}`;
+                    if (selectedDates.includes(fullDate)) {
+                        day.classList.add('selected');
+                    } else {
+                        day.classList.remove('selected');
+                    }
+                });
+    
+                updateNextButtonState(); // Optionally, update the state of the "next" button or other UI elements
+            }
+    
+            function showRentalChoiceModal() {
+                document.getElementById('overlay').style.display = 'block';
+                document.getElementById('rentalChoiceModal').style.display = 'block';
+            }
+    
+            function hideRentalChoiceModal() {
+                document.getElementById('overlay').style.display = 'none';
+                document.getElementById('rentalChoiceModal').style.display = 'none';
+            }
+    
+            function showTimeOfDayChoice(slot) {
+                const timeSiang = document.getElementById('timeSiang');
+                const timeMalam = document.getElementById('timeMalam');
+    
+                if (slot === 'Siang') {
+                    timeSiang.style.display = 'block';
+                    timeMalam.style.display = 'none';
+                    slotSewaan = 'Siang';
+                } else if (slot === 'Malam') {
+                    timeSiang.style.display = 'none';
+                    timeMalam.style.display = 'block';
+                    slotSewaan = 'Malam';
+                }
+    
+                updateNextButtonState();
+            }
+    
+            function setupRentalChoice() {
+                const rentByDayCheckbox = document.getElementById('rentByDay');
+                const rentByHourCheckbox = document.getElementById('rentByHour');
+                const timeSlots = document.getElementById('timeSlots');
+                const timeOfDayContainer = document.getElementById('timeOfDay');
+    
+                rentByDayCheckbox.addEventListener('change', function () {
+                    if (this.checked) {
+                        jenisSewaan = "Per Hari";
+                        rentByHourCheckbox.checked = false;
+                        hideRentalChoiceModal();
+                        selectedDates = [];
+                        timeSlots.style.display = 'none';
+                        timeOfDayContainer.style.display = 'none';
+                        updateCalendar();
+                        updateNextButtonState();
+                    }
+                });
+    
+                rentByHourCheckbox.addEventListener('change', function () {
+                    if (this.checked) {
+                        jenisSewaan = "Per Jam";
+                        rentByDayCheckbox.checked = false;
+                        hideRentalChoiceModal();
+                        selectedDates = [];
+                        timeSlots.style.display = 'block';
+                        showTimeOfDayChoice('Siang'); // Display the time slots when selecting hourly rental
+                        updateCalendar();
+                        updateNextButtonState();
+                    }
+                });
+    
+                // Event listeners for Siang and Malam radio buttons
+                document.getElementById('siang').addEventListener('change', function () {
+                    if (this.checked) {
+                        showTimeOfDayChoice('Siang');
+                    }
+                });
+    
+                document.getElementById('malam').addEventListener('change', function () {
+                    if (this.checked) {
+                        showTimeOfDayChoice('Malam');
+                    }
+                });
+            }
+    
+            function disableDateAndTimeSelection() {
+                // Disable date selection
+                const days = document.querySelectorAll('.day');
+                days.forEach(day => {
+                    day.removeEventListener('click', selectDate);
+                    day.classList.add('disabled');
+                });
+    
+                // Disable time selection
+                const siangCheckboxes = document.querySelectorAll('#timeSiang input[type="checkbox"]');
+                const malamCheckboxes = document.querySelectorAll('#timeMalam input[type="checkbox"]');
+                siangCheckboxes.forEach(checkbox => {
+                    checkbox.disabled = true;
+                });
+                malamCheckboxes.forEach(checkbox => {
+                    checkbox.disabled = true;
+                });
+    
+                // Disable the "Next" button
+                const nextButton = document.getElementById('next');
+                nextButton.disabled = true;
+            }
+    
+            // Modify the setupFormSubmission function to call the disableDateAndTimeSelection function
+            function setupFormSubmission() {
+                document.querySelector('form').addEventListener('submit', function (event) {
+                    event.preventDefault();
+    
+                    // Get selected Siang or Malam time if applicable
+                    selectedTime = getSelectedTimes().join(',');
+    
+                    // Update hidden input fields with selected data
+                    document.getElementById('selectedDate').value = JSON.stringify(selectedDates);
+                    document.getElementById('jenisSewaan').value = jenisSewaan;
+                    document.getElementById('slotSewaan').value = slotSewaan;
+                    document.getElementById('selectedTime').value = selectedTime;
+    
+                    // Disable date and time selection
+                    disableDateAndTimeSelection();
+    
+                    // Submit the form
+                    this.submit();
+                });
+            }
+    
+            function setupCalendarNavigation() {
+                document.getElementById('prevMonth').addEventListener('click', () => changeMonth(-1));
+                document.getElementById('nextMonth').addEventListener('click', () => changeMonth(1));
+            }
+    
+            function init() {
+                updateMonthYear();
+                createCalendar();
+                showRentalChoiceModal(); // Call the function here to display the modal
+                setupRentalChoice();
+                setupCalendarNavigation();
+                setupFormSubmission();
+                updateNextButtonState();
+    
+                // Event listeners for time selection checkboxes
+                document.querySelectorAll('#timeSiang input[type="checkbox"]').forEach(checkbox => {
+                    checkbox.addEventListener('change', function () {
+                        updateNextButtonState();
+                    });
+                });
+    
+                document.querySelectorAll('#timeMalam input[type="checkbox"]').forEach(checkbox => {
+                    checkbox.addEventListener('change', function () {
+                        updateNextButtonState();
+                    });
+                });
+            }
+    
+            init();
+    
+            function getSelectedTimes() {
+                let selectedTimes = [];
+    
+                document.querySelectorAll('#timeSiang input[type="checkbox"]:checked').forEach(checkbox => {
+                    selectedTimes.push(checkbox.value);
+                });
+    
+                document.querySelectorAll('#timeMalam input[type="checkbox"]:checked').forEach(checkbox => {
+                    selectedTimes.push(checkbox.value);
+                });
+    
+                return selectedTimes;
+            }
+        });
+    </script>                     
+</body>
+</html>
